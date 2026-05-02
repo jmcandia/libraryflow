@@ -72,6 +72,7 @@ users-service/
 │   │           ├── controller/
 │   │           │   └── UserController.java
 │   │           ├── dto/
+│   │           │   ├── ApiErrorResponse.java
 │   │           │   ├── UserRequest.java
 │   │           │   └── UserResponse.java
 │   │           ├── exception/
