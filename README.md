@@ -50,14 +50,14 @@ El propósito de este ejercicio es verificar la capacidad del equipo para diseñ
     - rutas semánticas.
     - métodos **HTTP** adecuados (`GET`, `POST`, `PUT`, `DELETE`).
     - parámetros, path variables y request bodies organizados.
-    - Uso obligatorio de ResponseEntity para controlar la respuesta.
+    - Uso obligatorio de `ResponseEntity` para controlar la respuesta.
 - Integración de logs estructurados con **SLF4J**:
   - Mensajes claros que permitan trazabilidad entre capas.
   - Reflejo de eventos relevantes como creación, actualización, errores y validaciones fallidas.
 - Comunicación entre microservicios:
   - Consumo de endpoints entre microservicios mediante `WebClient` o `Feign Client`.
   - Manejo de timeouts, errores y validación de datos recibidos.
-  - Pruebas de integración mínimas mediante Postman u otra herramienta **REST**.
+  - Pruebas de integración mínimas mediante **Postman** u otra herramienta **REST**.
 - Buenas prácticas y calidad de código:
   - Código comentado cuando sea necesario.
   - Nombres de clases, métodos y variables significativos.
@@ -74,6 +74,15 @@ El propósito de este ejercicio es verificar la capacidad del equipo para diseñ
 - Colección de **Postman** o similar
 - Scripts de base de datos o migraciones
 - Evidencia de pruebas
+
+## Resultado Esperado
+
+Al finalizar este ejercicio, deberías tener un sistema funcional que:
+
+- Cumpla principios de arquitectura de microservicios
+- Aplique buenas prácticas de desarrollo backend
+- Mantenga consistencia en reglas de negocio
+- Sea escalable, mantenible y bien estructurado
 
 ## Composición del ejercicio
 
@@ -111,7 +120,7 @@ Responsable de la gestión de autores.
 - Eliminar autor
 - Listar todos los libros por autor
 
-**Atributos sugeridos para la entidad: `Author`:**
+**Atributos sugeridos para la entidad `Author`:**
 
 - `id`: identificador único del autor
 - `fullName`: nombre completo del autor
@@ -135,11 +144,11 @@ Responsable del catálogo de libros.
 - Eliminar libro
 - Listar todos los préstamos por libro
 
-**Atributos sugeridos  para la entidad: `Book`:**
+**Atributos sugeridos para la entidad `Book`:**
 
 - `id`: identificador único del libro
 - `title`: título del libro
-- `sumarry`: sinposis del libro
+- `sumarry`: sinopsis del libro
 - `isbn`: código internacional único que identifica al libro
 - `authorId`: identificador del autor del libro
 - `available`: indica si el libro está disponible para préstamo (true) o actualmente prestado (false)
@@ -174,15 +183,6 @@ Responsable de la gestión de préstamos.
 - `bookId`: identificador del libro prestado
 - `loanDate`: fecha en que se realizó el préstamo
 - `returnDate`: fecha en que se devuelve el libro (puede ser nula si aún no ha sido devuelto)
-
-## Resultado Esperado
-
-Al finalizar este ejercicio, deberías tener un sistema funcional que:
-
-- Cumpla principios de arquitectura de microservicios
-- Aplique buenas prácticas de desarrollo backend
-- Mantenga consistencia en reglas de negocio
-- Sea escalable, mantenible y bien estructurado
 
 ## Autor
 
