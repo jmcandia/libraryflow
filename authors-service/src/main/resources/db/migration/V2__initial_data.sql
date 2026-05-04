@@ -1,0 +1,16 @@
+INSERT INTO authors (full_name, biography, nationality, birth_date, created_at) VALUES
+('Jane Austen', 'English novelist known for her six major novels.', 'British', '1775-12-16', CURRENT_TIMESTAMP),
+('Mark Twain', 'American writer, humorist, entrepreneur, publisher, and lecturer.', 'American', '1835-11-30', CURRENT_TIMESTAMP),
+('Leo Tolstoy', 'Russian writer who is regarded as one of the greatest authors of all time.', 'Russian', '1828-09-09', CURRENT_TIMESTAMP),
+('Virginia Woolf', 'English writer, considered one of the most important modernist 20th-century authors.', 'British', '1882-01-25', CURRENT_TIMESTAMP),
+('Gabriel García Márquez', 'Colombian novelist, short-story writer, screenwriter and journalist.', 'Colombian', '1927-03-06', CURRENT_TIMESTAMP),
+('Haruki Murakami', 'Japanese writer known for his surrealistic and magical realist works.', 'Japanese', '1949-01-12', CURRENT_TIMESTAMP),
+('Chinua Achebe', 'Nigerian novelist, poet, professor, and critic.', 'Nigerian', '1930-11-16', CURRENT_TIMESTAMP),
+('Isabel Allende', 'Chilean writer known for her novels that often contain elements of magical realism.', 'Chilean', '1942-08-02', CURRENT_TIMESTAMP),
+('Fyodor Dostoevsky', 'Russian novelist, short story writer, essayist, journalist and philosopher.', 'Russian', '1821-11-11', CURRENT_TIMESTAMP),
+('Toni Morrison', 'American novelist, essayist, editor, and professor.', 'American', '1931-02-18', CURRENT_TIMESTAMP),
+('J.K. Rowling', 'British author, best known for the Harry Potter series.', 'British', '1965-07-31', CURRENT_TIMESTAMP),
+('George Orwell', 'English novelist, essayist, journalist and critic.', 'British', '1903-06-25', CURRENT_TIMESTAMP),
+('Franz Kafka', 'Austrian writer of novels and short stories, widely regarded as one of the major figures of 20th-century literature.', 'Austrian', '1883-07-03', CURRENT_TIMESTAMP),
+('Emily Dickinson', 'American poet known for her reclusive lifestyle and unique poetic style.', 'American', '1830-12-10', CURRENT_TIMESTAMP),
+('Homer', 'Ancient Greek epic poet, traditionally said to be the author of the epic poems the Iliad and the Odyssey.', 'Greek', NULL, CURRENT_TIMESTAMP);
