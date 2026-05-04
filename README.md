@@ -71,11 +71,11 @@ El propósito de este ejercicio es verificar la capacidad del equipo para diseñ
 - Repositorio Git con:
   - Código fuente de los microservicios
   - `README` principal
-- Colección de Postman o similar
+- Colección de **Postman** o similar
 - Scripts de base de datos o migraciones
 - Evidencia de pruebas
 
-## Arquitectura del Sistema
+## Composición del ejercicio
 
 El sistema debe estar compuesto por los siguientes microservicios:
 
@@ -99,7 +99,7 @@ Responsable de la gestión de usuarios.
 - `phone`: número de teléfono del usuario
 - `createdAt`: fecha en que el usuario fue registrado en el sistema
 
-### Microservicio `authors-service`
+### 2. Microservicio `authors-service`
 
 Responsable de la gestión de autores.
 
@@ -120,7 +120,7 @@ Responsable de la gestión de autores.
 - `birthDate`: fecha de nacimiento del autor
 - `createdAt`: fecha en que el autor fue registrado en el sistema
 
-### Microservicio `books-service`
+### 3. Microservicio `books-service`
 
 Responsable del catálogo de libros.
 
@@ -145,7 +145,7 @@ Responsable del catálogo de libros.
 - `available`: indica si el libro está disponible para préstamo (true) o actualmente prestado (false)
 - `createdAt`: fecha en que el libro fue registrado en el sistema
 
-### Microservicio `loans-service`
+### 4. Microservicio `loans-service`
 
 Responsable de la gestión de préstamos.
 
