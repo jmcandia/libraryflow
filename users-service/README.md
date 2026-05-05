@@ -68,7 +68,7 @@ users-service/
 ├── src/
 │   ├── main/
 │   │   └── java/
-│   │       └── io/libraryflow/
+│   │       └── io/libraryflow/users/
 │   │           ├── controller/
 │   │           │   └── UserController.java
 │   │           ├── dto/

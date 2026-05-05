@@ -69,7 +69,7 @@ authors-service/
 ├── src/
 │   ├── main/
 │   │   └── java/
-│   │       └── io/libraryflow/
+│   │       └── io/libraryflow/authors/
 │   │           ├── controller/
 │   │           │   └── AuthorController.java
 │   │           ├── dto/
