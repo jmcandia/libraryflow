@@ -15,6 +15,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * La clase Author es una entidad JPA que representa a un autor en la base de
+ * datos. Contiene campos para el ID del autor, nombre completo, biografía,
+ * nacionalidad, fecha de nacimiento y la fecha de creación. La
+ * anotación @Entity indica que esta clase es una entidad JPA, y la
+ * anotación @Table especifica el nombre de la tabla en la base de datos. Los
+ * campos están anotados con @Column para definir las propiedades de las
+ * columnas en la tabla. La anotación @Id indica que el campo id es la clave
+ * primaria, y @GeneratedValue especifica que el valor del ID se generará
+ * automáticamente. El método onCreate() se ejecuta antes de que la entidad se
+ * persista en la base de datos y establece la fecha de creación al momento
+ * actual.
+ */
 @Entity
 @Table(name = "authors")
 @Data

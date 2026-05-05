@@ -105,9 +105,11 @@ public class UserController {
      * 200 OK. Si el usuario no se encuentra, se lanza una excepción que será
      * manejada por el controlador de excepciones global.
      * 
-     * @param id
-     * @param userRequest
-     * @return
+     * @param id          Long - El ID del usuario a actualizar
+     * @param userRequest UserRequest - El objeto de solicitud que contiene los
+     *                    datos del usuario a actualizar, validado con @Valid
+     * @return ResponseEntity<UserResponse> - La respuesta HTTP con el usuario
+     *         actualizado y el código de estado 200 OK
      */
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {

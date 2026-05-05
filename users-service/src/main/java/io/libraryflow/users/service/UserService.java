@@ -15,12 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * La clase UserService es una clase de servicio en la capa de negocio que
- * maneja la lógica relacionada con los usuarios.
- * Proporciona métodos para obtener todos los usuarios, obtener un usuario por
- * su ID, crear un nuevo usuario, actualizar un usuario existente y eliminar un
- * usuario. Utiliza el UserRepository para interactuar con la base de datos y el
- * UserMapper para convertir entre las entidades de usuario y los objetos de
- * transferencia de datos (DTO) UserRequest y UserResponse.
+ * maneja la lógica relacionada con los usuarios. Proporciona métodos para
+ * obtener todos los usuarios, obtener un usuario por su ID, crear un nuevo
+ * usuario, actualizar un usuario existente y eliminar un usuario. Utiliza el
+ * UserRepository para interactuar con la base de datos y el UserMapper para
+ * convertir entre las entidades de usuario y los objetos de transferencia de
+ * datos (DTO) UserRequest y UserResponse.
  */
 @Service
 @Slf4j

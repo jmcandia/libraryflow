@@ -15,6 +15,22 @@ import io.libraryflow.authors.dto.ApiErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * GlobalExceptionHandler es una clase que maneja las excepciones de manera
+ * global en la aplicación. Utiliza la anotación @RestControllerAdvice para
+ * indicar que es un controlador de excepciones y la anotación @Slf4j para
+ * habilitar el registro de logs. Esta clase define varios métodos que manejan
+ * diferentes tipos de excepciones, como DataIntegrityViolationException,
+ * NoSuchElementException, MethodArgumentNotValidException y RuntimeException.
+ * Cada método crea una respuesta de error estructurada utilizando la clase
+ * ApiErrorResponse, que incluye información sobre el error, como el timestamp,
+ * el status, el error, el mensaje y el path de la solicitud. Luego, devuelve
+ * una respuesta HTTP con el estado correspondiente y el cuerpo de la respuesta
+ * de error. Además, cada método registra el error en los logs para facilitar la
+ * depuración. Esta clase ayuda a centralizar el manejo de excepciones en la
+ * aplicación y a proporcionar respuestas de error consistentes y estructuradas
+ * a los clientes.
+ */
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
