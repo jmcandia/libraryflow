@@ -1,0 +1,47 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "AuthorsServiceApplication",
+      "request": "launch",
+      "mainClass": "io.libraryflow.authors.AuthorsServiceApplication",
+      "projectName": "authors-service"
+    },
+    {
+      "type": "java",
+      "name": "BooksServiceApplication",
+      "request": "launch",
+      "mainClass": "io.libraryflow.books.BooksServiceApplication",
+      "projectName": "books-service"
+    },
+    {
+      "type": "java",
+      "name": "LoansServiceApplication",
+      "request": "launch",
+      "mainClass": "io.libraryflow.loans.LoansServiceApplication",
+      "projectName": "loans-service"
+    },
+    {
+      "type": "java",
+      "name": "UsersServiceApplication",
+      "request": "launch",
+      "mainClass": "io.libraryflow.users.UsersServiceApplication",
+      "projectName": "users-service"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Launch All Services",
+      "configurations": [
+        "AuthorsServiceApplication",
+        "BooksServiceApplication",
+        "LoansServiceApplication",
+        "UsersServiceApplication"
+      ]
+    }
+  ]
+}
