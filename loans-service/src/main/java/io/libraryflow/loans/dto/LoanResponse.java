@@ -32,8 +32,8 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LoanResponse {
     private Long id;
-    private Long userId;
-    private Long bookId;
+    private UserResponse user;
+    private BookResponse book;
     private LocalDateTime loanDate;
     private LocalDateTime returnDate;
 }

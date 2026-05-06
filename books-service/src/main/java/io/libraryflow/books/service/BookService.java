@@ -149,4 +149,48 @@ public class BookService {
         }
         bookRepository.deleteById(id);
     }
+
+    /**
+     * Marca un libro como prestado estableciendo su disponibilidad a false, guarda
+     * el libro actualizado en el repositorio y devuelve el BookResponse
+     * correspondiente. Si el libro no se encuentra, lanza una excepción de tipo
+     * NoSuchElementException. Si el libro ya está prestado (disponibilidad false),
+     * lanza una excepción de tipo IllegalStateException.
+     * 
+     * @param id Long - El ID del libro a prestar
+     * @return BookResponse - El libro prestado mapeado a BookResponse
+     */
+    public BookResponse loanBook(Long id) {
+        log.info("Loaning book with id: {}", id);
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Book not found with id: " + id));
+        if (!book.getAvailable()) {
+            throw new IllegalStateException("Book with id: " + id + " is not available for loan");
+        }
+        book.setAvailable(false);
+        Book updatedBook = bookRepository.save(book);
+        return bookMapper.toResponse(updatedBook);
+    }
+
+    /**
+     * Marca un libro como devuelto estableciendo su disponibilidad a true, guarda
+     * el libro actualizado en el repositorio y devuelve el BookResponse
+     * correspondiente. Si el libro no se encuentra, lanza una excepción de tipo
+     * NoSuchElementException. Si el libro ya está disponible (disponibilidad true),
+     * lanza una excepción de tipo IllegalStateException.
+     * 
+     * @param id Long - El ID del libro a devolver
+     * @return BookResponse - El libro devuelto mapeado a BookResponse
+     */
+    public BookResponse returnBook(Long id) {
+        log.info("Returning book with id: {}", id);
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Book not found with id: " + id));
+        if (book.getAvailable()) {
+            throw new IllegalStateException("Book with id: " + id + " is not currently loaned out");
+        }
+        book.setAvailable(true);
+        Book updatedBook = bookRepository.save(book);
+        return bookMapper.toResponse(updatedBook);
+    }
 }

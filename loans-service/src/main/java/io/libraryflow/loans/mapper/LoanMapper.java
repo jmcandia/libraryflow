@@ -2,8 +2,10 @@ package io.libraryflow.loans.mapper;
 
 import org.springframework.stereotype.Component;
 
+import io.libraryflow.loans.dto.BookResponse;
 import io.libraryflow.loans.dto.LoanRequest;
 import io.libraryflow.loans.dto.LoanResponse;
+import io.libraryflow.loans.dto.UserResponse;
 import io.libraryflow.loans.model.Loan;
 
 /**
@@ -49,11 +51,11 @@ public class LoanMapper {
      * @param loan
      * @return
      */
-    public LoanResponse toResponse(Loan loan) {
+    public LoanResponse toResponse(Loan loan, UserResponse user, BookResponse book) {
         return LoanResponse.builder()
                 .id(loan.getId())
-                .userId(loan.getUserId())
-                .bookId(loan.getBookId())
+                .user(user)
+                .book(book)
                 .loanDate(loan.getLoanDate())
                 .returnDate(loan.getReturnDate())
                 .build();

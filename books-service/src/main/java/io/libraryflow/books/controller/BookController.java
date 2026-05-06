@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -146,5 +147,37 @@ public class BookController {
         log.info("DELETE /books/{}", id);
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Marca un libro como prestado por su ID utilizando el BookService. Luego,
+     * devuelve una respuesta HTTP con el cuerpo del libro actualizado y un código
+     * de estado 200 OK. Si el libro no se encuentra, se lanza una excepción que
+     * será manejada por el controlador de excepciones global.
+     * 
+     * @param id Long - El ID del libro a marcar como prestado, obtenido de la ruta
+     *           de la solicitud
+     * @return ResponseEntity<BookResponse> - La respuesta HTTP con el libro
+     *         actualizado y el código de estado 200 OK
+     */
+    @PatchMapping("/{id}/loan")
+    public ResponseEntity<BookResponse> loanBook(@PathVariable Long id) {
+        log.info("PATCH /books/{}/loan", id);
+        return ResponseEntity.ok(bookService.loanBook(id));
+    }
+
+    /**
+     * Marca un libro como devuelto por su ID utilizando el BookService. Luego,
+     * devuelve una respuesta HTTP con el cuerpo del libro actualizado y un código
+     * de estado 200 OK. Si el libro no se encuentra, se lanza una excepción que
+     * será manejada por el controlador de excepciones global.
+     * 
+     * @param id
+     * @return
+     */
+    @PatchMapping("/{id}/return")
+    public ResponseEntity<BookResponse> returnBook(@PathVariable Long id) {
+        log.info("PATCH /books/{}/return", id);
+        return ResponseEntity.ok(bookService.returnBook(id));
     }
 }

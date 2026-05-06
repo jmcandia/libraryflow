@@ -7,8 +7,12 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.libraryflow.loans.client.BookClient;
+import io.libraryflow.loans.client.UserClient;
+import io.libraryflow.loans.dto.BookResponse;
 import io.libraryflow.loans.dto.LoanRequest;
 import io.libraryflow.loans.dto.LoanResponse;
+import io.libraryflow.loans.dto.UserResponse;
 import io.libraryflow.loans.mapper.LoanMapper;
 import io.libraryflow.loans.model.Loan;
 import io.libraryflow.loans.repository.LoanRepository;
@@ -33,6 +37,12 @@ public class LoanService {
     @Autowired
     private LoanMapper loanMapper;
 
+    @Autowired
+    private UserClient userClient;
+
+    @Autowired
+    private BookClient bookClient;
+
     /**
      * Obtiene la lista de todos los préstamos desde el repositorio, mapea cada
      * préstamo a un LoanResponse utilizando el LoanMapper y devuelve la lista de
@@ -44,7 +54,11 @@ public class LoanService {
     public List<LoanResponse> getAllLoans() {
         log.info("Fetching all loans");
         return loanRepository.findAll().stream()
-                .map(loanMapper::toResponse)
+                .map(loan -> {
+                    UserResponse user = userClient.getUserById(loan.getUserId());
+                    BookResponse book = bookClient.getBookById(loan.getBookId());
+                    return loanMapper.toResponse(loan, user, book);
+                })
                 .toList();
     }
 
@@ -63,7 +77,11 @@ public class LoanService {
     public List<LoanResponse> getLoansByUserId(Long userId) {
         log.info("Fetching loans for user id: {}", userId);
         return loanRepository.findByUserId(userId).stream()
-                .map(loanMapper::toResponse)
+                .map(loan -> {
+                    UserResponse user = userClient.getUserById(loan.getUserId());
+                    BookResponse book = bookClient.getBookById(loan.getBookId());
+                    return loanMapper.toResponse(loan, user, book);
+                })
                 .toList();
     }
 
@@ -82,7 +100,11 @@ public class LoanService {
     public List<LoanResponse> getLoansByBookId(Long bookId) {
         log.info("Fetching loans for book id: {}", bookId);
         return loanRepository.findByBookId(bookId).stream()
-                .map(loanMapper::toResponse)
+                .map(loan -> {
+                    UserResponse user = userClient.getUserById(loan.getUserId());
+                    BookResponse book = bookClient.getBookById(loan.getBookId());
+                    return loanMapper.toResponse(loan, user, book);
+                })
                 .toList();
     }
 
@@ -99,7 +121,11 @@ public class LoanService {
     public LoanResponse getLoanById(Long id) {
         log.info("Fetching loan with id: {}", id);
         return loanRepository.findById(id)
-                .map(loanMapper::toResponse)
+                .map(loan -> {
+                    UserResponse user = userClient.getUserById(loan.getUserId());
+                    BookResponse book = bookClient.getBookById(loan.getBookId());
+                    return loanMapper.toResponse(loan, user, book);
+                })
                 .orElseThrow(() -> new NoSuchElementException("Loan not found with id: " + id));
     }
 
@@ -116,11 +142,22 @@ public class LoanService {
     public LoanResponse createLoan(LoanRequest loanRequest) {
         log.info("Creating new loan for user id: {} and book id: {}", loanRequest.getUserId(), loanRequest.getBookId());
         Loan loan = loanMapper.fromRequest(loanRequest);
+        // Buscar el usuario para asegurarse de que existe
+        UserResponse user = userClient.getUserById(loanRequest.getUserId());
+        // Buscar el libro para asegurarse de que existe
+        BookResponse book = bookClient.getBookById(loanRequest.getBookId());
+        if (!book.getAvailable()) {
+            log.warn("Book with id: {} is not available for loan", loanRequest.getBookId());
+            throw new IllegalStateException("Book with id: " + loanRequest.getBookId() + " is not available for loan");
+        }
         // Establecer la fecha del préstamo al momento de la creación
         loan.setLoanDate(LocalDateTime.now());
         // Guardar el préstamo en el repositorio
         loan = loanRepository.save(loan);
-        return loanMapper.toResponse(loan);
+        // Marcar el libro como prestado en el servicio de libros
+        bookClient.markBookAsLoaned(loanRequest.getBookId());
+        // Retornar el préstamo creado mapeado a LoanResponse
+        return loanMapper.toResponse(loan, user, book);
     }
 
     /**
@@ -139,14 +176,22 @@ public class LoanService {
         log.info("Returning loan with id: {}", id);
         Loan loan = loanRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Loan not found with id: " + id));
+        // Verificar si el préstamo ya ha sido devuelto
         if (loan.getReturnDate() != null) {
             log.warn("Loan with id: {} is already returned", id);
             throw new IllegalStateException("Loan with id: " + id + " is already returned");
         }
+        // Buscar el usuario para asegurarse de que existe
+        UserResponse user = userClient.getUserById(loan.getUserId());
+        // Buscar el libro para asegurarse de que existe
+        BookResponse book = bookClient.getBookById(loan.getBookId());
         // Establecer la fecha de devolución al momento de la devolución
         loan.setReturnDate(LocalDateTime.now());
         // Guardar el préstamo actualizado en el repositorio
         loan = loanRepository.save(loan);
-        return loanMapper.toResponse(loan);
+        // Marcar el libro como devuelto en el servicio de libros
+        bookClient.markBookAsReturned(loan.getBookId());
+        // Retornar el préstamo actualizado mapeado a LoanResponse
+        return loanMapper.toResponse(loan, user, book);
     }
 }
