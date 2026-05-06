@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.libraryflow.books.client.AuthorClient;
+import io.libraryflow.books.dto.AuthorResponse;
 import io.libraryflow.books.dto.BookRequest;
 import io.libraryflow.books.dto.BookResponse;
 import io.libraryflow.books.mapper.BookMapper;
@@ -30,6 +32,9 @@ public class BookService {
     private BookRepository bookRepository;
 
     @Autowired
+    private AuthorClient authorClient;
+
+    @Autowired
     private BookMapper bookMapper;
 
     /**
@@ -43,7 +48,10 @@ public class BookService {
     public List<BookResponse> getAllBooks() {
         log.info("Fetching all books");
         return bookRepository.findAll().stream()
-                .map(bookMapper::toResponse)
+                .map(book -> {
+                    AuthorResponse author = authorClient.getAuthorById(book.getAuthorId());
+                    return bookMapper.toResponse(book, author);
+                })
                 .toList();
     }
 
@@ -60,7 +68,10 @@ public class BookService {
     public List<BookResponse> getBooksByAuthor(Long authorId) {
         log.info("Fetching books for author with id: {}", authorId);
         return bookRepository.findByAuthorId(authorId).stream()
-                .map(bookMapper::toResponse)
+                .map(book -> {
+                    AuthorResponse author = authorClient.getAuthorById(book.getAuthorId());
+                    return bookMapper.toResponse(book, author);
+                })
                 .toList();
     }
 
@@ -76,7 +87,10 @@ public class BookService {
     public BookResponse getBookById(Long id) {
         log.info("Fetching book with id: {}", id);
         return bookRepository.findById(id)
-                .map(bookMapper::toResponse)
+                .map(book -> {
+                    AuthorResponse author = authorClient.getAuthorById(book.getAuthorId());
+                    return bookMapper.toResponse(book, author);
+                })
                 .orElseThrow(() -> new NoSuchElementException("Book not found with id: " + id));
     }
 
@@ -93,7 +107,10 @@ public class BookService {
     public List<BookResponse> getBooksByAuthorId(Long authorId) {
         log.info("Fetching books for author with id: {}", authorId);
         return bookRepository.findByAuthorId(authorId).stream()
-                .map(bookMapper::toResponse)
+                .map(book -> {
+                    AuthorResponse author = authorClient.getAuthorById(book.getAuthorId());
+                    return bookMapper.toResponse(book, author);
+                })
                 .toList();
     }
 
@@ -108,7 +125,13 @@ public class BookService {
     public BookResponse createBook(BookRequest bookRequest) {
         log.info("Creating new book: {}", bookRequest.getTitle());
         Book book = bookMapper.toEntity(bookRequest);
-        return bookMapper.toResponse(bookRepository.save(book));
+        // Buscar el autor para asegurarse de que existe
+        AuthorResponse author = authorClient.getAuthorById(book.getAuthorId());
+        if (author == null) {
+            log.warn("Author with id: {} not found", book.getAuthorId());
+            throw new NoSuchElementException("Author not found with id: " + book.getAuthorId());
+        }
+        return bookMapper.toResponse(bookRepository.save(book), author);
     }
 
     /**
@@ -125,13 +148,19 @@ public class BookService {
         log.info("Updating book with id: {}", id);
         Book existingBook = bookRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Book not found with id: " + id));
+        // Buscar el autor para asegurarse de que existe
+        AuthorResponse author = authorClient.getAuthorById(bookRequest.getAuthorId());
+        if (author == null) {
+            log.warn("Author with id: {} not found", bookRequest.getAuthorId());
+            throw new NoSuchElementException("Author not found with id: " + bookRequest.getAuthorId());
+        }
         existingBook.setTitle(bookRequest.getTitle());
         existingBook.setSummary(bookRequest.getSummary());
         existingBook.setIsbn(bookRequest.getIsbn());
         existingBook.setAuthorId(bookRequest.getAuthorId());
         existingBook.setAvailable(bookRequest.getAvailable());
         Book updatedBook = bookRepository.save(existingBook);
-        return bookMapper.toResponse(updatedBook);
+        return bookMapper.toResponse(updatedBook, author);
     }
 
     /**
@@ -169,7 +198,8 @@ public class BookService {
         }
         book.setAvailable(false);
         Book updatedBook = bookRepository.save(book);
-        return bookMapper.toResponse(updatedBook);
+        AuthorResponse author = authorClient.getAuthorById(updatedBook.getAuthorId());
+        return bookMapper.toResponse(updatedBook, author);
     }
 
     /**
@@ -191,6 +221,7 @@ public class BookService {
         }
         book.setAvailable(true);
         Book updatedBook = bookRepository.save(book);
-        return bookMapper.toResponse(updatedBook);
+        AuthorResponse author = authorClient.getAuthorById(updatedBook.getAuthorId());
+        return bookMapper.toResponse(updatedBook, author);
     }
 }

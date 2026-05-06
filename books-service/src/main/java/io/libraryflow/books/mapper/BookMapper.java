@@ -2,6 +2,7 @@ package io.libraryflow.books.mapper;
 
 import org.springframework.stereotype.Component;
 
+import io.libraryflow.books.dto.AuthorResponse;
 import io.libraryflow.books.dto.BookRequest;
 import io.libraryflow.books.dto.BookResponse;
 import io.libraryflow.books.model.Book;
@@ -51,13 +52,13 @@ public class BookMapper {
      * @return BookResponse - El objeto de transferencia de datos creado a partir
      *         de la entidad Book
      */
-    public BookResponse toResponse(Book book) {
+    public BookResponse toResponse(Book book, AuthorResponse author) {
         return BookResponse.builder()
                 .id(book.getId())
                 .title(book.getTitle())
                 .summary(book.getSummary())
                 .isbn(book.getIsbn())
-                .authorId(book.getAuthorId())
+                .author(author)
                 .available(book.getAvailable())
                 .createdAt(book.getCreatedAt())
                 .build();

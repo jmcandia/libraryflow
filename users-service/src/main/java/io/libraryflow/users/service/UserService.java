@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.libraryflow.users.client.LoanClient;
+import io.libraryflow.users.dto.LoanResponse;
 import io.libraryflow.users.dto.UserRequest;
 import io.libraryflow.users.dto.UserResponse;
 import io.libraryflow.users.mapper.UserMapper;
@@ -31,6 +33,9 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private LoanClient loanClient;
 
     /**
      * Obtiene la lista de todos los usuarios desde el repositorio, mapea cada
@@ -119,5 +124,24 @@ public class UserService {
             throw new NoSuchElementException("User not found with id: " + id);
         }
         userRepository.deleteById(id);
+    }
+
+    /**
+     * Obtiene la lista de préstamos asociados a un usuario identificado por su ID
+     * utilizando el LoanClient para comunicarse con el servicio de préstamos. Si el
+     * usuario no se encuentra con el ID dado, se lanza una excepción de tipo
+     * NoSuchElementException.
+     * 
+     * @param id Long - El ID del usuario para el cual se desean obtener los
+     *           préstamos
+     * @return List<LoanResponse> - La lista de préstamos asociados al usuario
+     * @throws NoSuchElementException - Si el usuario no se encuentra con el ID dado
+     */
+    public List<LoanResponse> getLoans(Long id) {
+        log.info("Fetching loans for user with id: {}", id);
+        if (!userRepository.existsById(id)) {
+            throw new NoSuchElementException("User not found with id: " + id);
+        }
+        return loanClient.getLoansByUserId(id);
     }
 }

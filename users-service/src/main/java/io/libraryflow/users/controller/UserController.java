@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import io.libraryflow.users.dto.LoanResponse;
 import io.libraryflow.users.dto.UserRequest;
 import io.libraryflow.users.dto.UserResponse;
 import io.libraryflow.users.service.UserService;
@@ -132,5 +133,22 @@ public class UserController {
         log.info("DELETE /users/{}", id);
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Obtiene la lista de préstamos asociados a un usuario identificado por su ID
+     * utilizando el LoanClient para comunicarse con el servicio de préstamos. Si el
+     * usuario no se encuentra con el ID dado, se lanza una excepción que será
+     * manejada por el controlador de excepciones global.
+     * 
+     * @param id Long - El ID del usuario para el cual se desean obtener los
+     *           préstamos
+     * @return ResponseEntity<List<LoanResponse>> - La respuesta HTTP con la lista
+     *         de préstamos asociados al usuario y el código de estado 200 OK
+     */
+    @GetMapping("/{id}/loans")
+    public ResponseEntity<List<LoanResponse>> getLoans(@PathVariable Long id) {
+        log.info("GET /users/{}/loans", id);
+        return ResponseEntity.ok(userService.getLoans(id));
     }
 }

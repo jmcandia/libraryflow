@@ -29,7 +29,7 @@ public class BookResponse {
     private String title;
     private String summary;
     private String isbn;
-    private Long authorId;
+    private AuthorResponse author;
     private Boolean available;
     private LocalDateTime createdAt;
 }
